@@ -5,12 +5,14 @@ import { BrandMark } from "@/components/zelo-ui";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useColors } from "@/hooks/use-colors";
 import { useAuth } from "@/lib/auth-context";
+import { useThemeContext } from "@/lib/theme-provider";
 
 export function AppHeader() {
   const colors = useColors();
   const router = useRouter();
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { colorScheme, setColorScheme } = useThemeContext();
   const canGoBack = router.canGoBack();
   const isHome = pathname.includes("/home");
 
@@ -31,6 +33,14 @@ export function AppHeader() {
           <Text style={styles.avatarText}>{user?.nome?.charAt(0).toUpperCase() ?? "Z"}</Text>
         </View>
         <Text numberOfLines={1} style={[styles.userName, { color: colors.foreground }]}>{user?.nome?.split(" ")[0] ?? "Usuário"}</Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={colorScheme === "light" ? "Ativar modo escuro" : "Ativar modo claro"}
+          onPress={() => setColorScheme(colorScheme === "light" ? "dark" : "light")}
+          style={({ pressed }) => [styles.themeButton, { borderColor: colors.border }, pressed && styles.pressed]}
+        >
+          <IconSymbol name={colorScheme === "light" ? "dark-mode" : "light-mode"} size={18} color={colors.foreground} />
+        </Pressable>
         <Pressable accessibilityRole="button" onPress={() => void logout()} style={({ pressed }) => [styles.logout, { borderColor: colors.border }, pressed && styles.pressed]}>
           <Text style={[styles.logoutText, { color: colors.foreground }]}>Sair</Text>
         </Pressable>
@@ -47,6 +57,7 @@ const styles = StyleSheet.create({
   avatarText: { color: "#FFFFFF", fontSize: 13, fontWeight: "800" },
   userName: { fontSize: 13, fontWeight: "700", maxWidth: 70 },
   logout: { paddingHorizontal: 10, paddingVertical: 7, borderWidth: 1, borderRadius: 11 },
+  themeButton: { width: 32, height: 32, borderWidth: 1, borderRadius: 10, alignItems: "center", justifyContent: "center" },
   logoutText: { fontSize: 12, fontWeight: "800" },
   pressed: { opacity: 0.7, transform: [{ scale: 0.97 }] },
 });
