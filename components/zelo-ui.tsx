@@ -50,11 +50,10 @@ export function PrimaryButton({
         accessibilityRole="button"
         disabled={disabled || loading}
         onPress={onPress}
-        style={({ pressed }) => [styles.touchLayer, pressed && styles.pressed]}
-      />
-      <View pointerEvents="none" style={styles.buttonContent}>
+        style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      >
         {loading ? <ActivityIndicator color={foregroundColor} /> : <Text style={[styles.buttonText, { color: foregroundColor }]}>{label}</Text>}
-      </View>
+      </Pressable>
     </View>
   );
 }
@@ -123,9 +122,8 @@ const styles = StyleSheet.create({
   compactName: { fontSize: 21, letterSpacing: -0.6 },
   card: { borderRadius: 20, borderWidth: 1, padding: 18, shadowColor: "#0F172A", shadowOpacity: 0.06, shadowRadius: 14, shadowOffset: { width: 0, height: 5 }, elevation: 2 },
   buttonShell: { width: "100%", height: 54, borderRadius: 16, borderWidth: 1, overflow: "hidden" },
-  touchLayer: { ...StyleSheet.absoluteFillObject },
-  buttonContent: { ...StyleSheet.absoluteFillObject, alignItems: "center", justifyContent: "center", paddingHorizontal: 20 },
-  buttonText: { width: "100%", textAlign: "center", textAlignVertical: "center", includeFontPadding: false, fontSize: 16, lineHeight: 22, fontWeight: "700" },
+  button: { width: "100%", height: 52, flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", paddingHorizontal: 20 },
+  buttonText: { width: "100%", height: 52, textAlign: "center", textAlignVertical: "center", includeFontPadding: false, fontSize: 16, lineHeight: 52, fontWeight: "700" },
   pressed: { opacity: 0.8, transform: [{ scale: 0.98 }] },
   disabled: { opacity: 0.55 },
   fieldWrap: { gap: 7 },

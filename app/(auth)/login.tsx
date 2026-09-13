@@ -54,11 +54,10 @@ export default function LoginScreen() {
                 accessibilityLabel="Entrar no Zelo"
                 disabled={loading}
                 onPress={() => void handleLogin()}
-                style={({ pressed }) => [styles.loginTouchLayer, pressed && styles.loginButtonPressed]}
-              />
-              <View pointerEvents="none" style={styles.loginButtonContent}>
+                style={({ pressed }) => [styles.loginButton, pressed && styles.loginButtonPressed]}
+              >
                 <Text style={styles.loginButtonText}>{loading ? "Entrando..." : "Entrar"}</Text>
-              </View>
+              </Pressable>
             </View>
             <View style={styles.registerRow}>
               <Text style={{ color: colors.muted }}>Ainda não possui conta?</Text>
@@ -85,9 +84,8 @@ const styles = StyleSheet.create({
   formTitle: { fontSize: 24, fontWeight: "800" },
   formSubtitle: { fontSize: 14, marginTop: -10 },
   loginButtonShell: { width: "100%", height: 54, borderRadius: 16, borderWidth: 1, borderColor: "#1F6F5C", backgroundColor: "#1F6F5C", overflow: "hidden", elevation: 2 },
-  loginTouchLayer: { ...StyleSheet.absoluteFillObject },
-  loginButtonContent: { ...StyleSheet.absoluteFillObject, alignItems: "center", justifyContent: "center", paddingHorizontal: 20 },
-  loginButtonText: { width: "100%", color: "#FFFFFF", textAlign: "center", textAlignVertical: "center", includeFontPadding: false, fontSize: 16, lineHeight: 22, fontWeight: "800" },
+  loginButton: { width: "100%", height: 52, flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", paddingHorizontal: 20 },
+  loginButtonText: { width: "100%", height: 52, color: "#FFFFFF", textAlign: "center", textAlignVertical: "center", includeFontPadding: false, fontSize: 16, lineHeight: 52, fontWeight: "800" },
   loginButtonPressed: { opacity: 0.8, transform: [{ scale: 0.98 }] },
   loginButtonDisabled: { opacity: 0.6 },
   error: { fontSize: 13, lineHeight: 18 },
