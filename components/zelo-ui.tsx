@@ -45,19 +45,17 @@ export function PrimaryButton({
   const backgroundColor = variant === "danger" ? colors.error : variant === "secondary" ? colors.surface : colors.primary;
   const foregroundColor = variant === "secondary" ? colors.foreground : "#FFFFFF";
   return (
-    <Pressable
-      accessibilityRole="button"
-      disabled={disabled || loading}
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.button,
-        { backgroundColor, borderColor: variant === "secondary" ? colors.border : backgroundColor },
-        pressed && styles.pressed,
-        (disabled || loading) && styles.disabled,
-      ]}
-    >
-      {loading ? <ActivityIndicator color={foregroundColor} /> : <Text style={[styles.buttonText, { color: foregroundColor }]}>{label}</Text>}
-    </Pressable>
+    <View style={[styles.buttonShell, { backgroundColor, borderColor: variant === "secondary" ? colors.border : backgroundColor }, (disabled || loading) && styles.disabled]}>
+      <Pressable
+        accessibilityRole="button"
+        disabled={disabled || loading}
+        onPress={onPress}
+        style={({ pressed }) => [styles.touchLayer, pressed && styles.pressed]}
+      />
+      <View pointerEvents="none" style={styles.buttonContent}>
+        {loading ? <ActivityIndicator color={foregroundColor} /> : <Text style={[styles.buttonText, { color: foregroundColor }]}>{label}</Text>}
+      </View>
+    </View>
   );
 }
 
@@ -124,8 +122,10 @@ const styles = StyleSheet.create({
   compactIcon: { width: 32, height: 32, borderRadius: 10 },
   compactName: { fontSize: 21, letterSpacing: -0.6 },
   card: { borderRadius: 20, borderWidth: 1, padding: 18, shadowColor: "#0F172A", shadowOpacity: 0.06, shadowRadius: 14, shadowOffset: { width: 0, height: 5 }, elevation: 2 },
-  button: { minHeight: 52, borderRadius: 16, borderWidth: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20 },
-  buttonText: { fontSize: 16, fontWeight: "700" },
+  buttonShell: { width: "100%", height: 54, borderRadius: 16, borderWidth: 1, overflow: "hidden" },
+  touchLayer: { ...StyleSheet.absoluteFillObject },
+  buttonContent: { ...StyleSheet.absoluteFillObject, alignItems: "center", justifyContent: "center", paddingHorizontal: 20 },
+  buttonText: { width: "100%", textAlign: "center", textAlignVertical: "center", includeFontPadding: false, fontSize: 16, lineHeight: 22, fontWeight: "700" },
   pressed: { opacity: 0.8, transform: [{ scale: 0.98 }] },
   disabled: { opacity: 0.55 },
   fieldWrap: { gap: 7 },

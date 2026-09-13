@@ -2,7 +2,7 @@ import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { BrandMark, Card, PrimaryButton, TextField } from "@/components/zelo-ui";
+import { BrandMark, Card, TextField } from "@/components/zelo-ui";
 import { ScreenContainer } from "@/components/screen-container";
 import { useColors } from "@/hooks/use-colors";
 import { useAuth } from "@/lib/auth-context";
@@ -47,7 +47,19 @@ export default function LoginScreen() {
             <TextField label="E-mail" value={email} onChangeText={setEmail} placeholder="voce@email.com" keyboardType="email-address" autoCapitalize="none" autoComplete="email" />
             <TextField label="Senha" value={senha} onChangeText={setSenha} placeholder="Sua senha" secureTextEntry autoComplete="password" />
             {error ? <Text style={[styles.error, { color: colors.error }]}>{error}</Text> : null}
-            <PrimaryButton label="Entrar" onPress={handleLogin} loading={loading} />
+            <View style={[styles.loginButtonShell, loading && styles.loginButtonDisabled]}>
+              <Pressable
+                testID="login-submit"
+                accessibilityRole="button"
+                accessibilityLabel="Entrar no Zelo"
+                disabled={loading}
+                onPress={() => void handleLogin()}
+                style={({ pressed }) => [styles.loginTouchLayer, pressed && styles.loginButtonPressed]}
+              />
+              <View pointerEvents="none" style={styles.loginButtonContent}>
+                <Text style={styles.loginButtonText}>{loading ? "Entrando..." : "Entrar"}</Text>
+              </View>
+            </View>
             <View style={styles.registerRow}>
               <Text style={{ color: colors.muted }}>Ainda não possui conta?</Text>
               <Link href="/(auth)/register" asChild>
@@ -72,6 +84,12 @@ const styles = StyleSheet.create({
   formCard: { gap: 16 },
   formTitle: { fontSize: 24, fontWeight: "800" },
   formSubtitle: { fontSize: 14, marginTop: -10 },
+  loginButtonShell: { width: "100%", height: 54, borderRadius: 16, borderWidth: 1, borderColor: "#1F6F5C", backgroundColor: "#1F6F5C", overflow: "hidden", elevation: 2 },
+  loginTouchLayer: { ...StyleSheet.absoluteFillObject },
+  loginButtonContent: { ...StyleSheet.absoluteFillObject, alignItems: "center", justifyContent: "center", paddingHorizontal: 20 },
+  loginButtonText: { width: "100%", color: "#FFFFFF", textAlign: "center", textAlignVertical: "center", includeFontPadding: false, fontSize: 16, lineHeight: 22, fontWeight: "800" },
+  loginButtonPressed: { opacity: 0.8, transform: [{ scale: 0.98 }] },
+  loginButtonDisabled: { opacity: 0.6 },
   error: { fontSize: 13, lineHeight: 18 },
   registerRow: { flexDirection: "row", justifyContent: "center", gap: 5, alignItems: "center", marginTop: 2 },
   link: { fontWeight: "800" },
